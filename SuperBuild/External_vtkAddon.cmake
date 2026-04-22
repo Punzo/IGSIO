@@ -22,8 +22,7 @@ else()
 
   set(IGSIO_vtkAddon_SRC_DIR ${CMAKE_BINARY_DIR}/vtkAddon CACHE INTERNAL "Path to store vtkAddon contents.")
   set(IGSIO_vtkAddon_PREFIX_DIR ${CMAKE_BINARY_DIR}/vtkAddon-prefix CACHE INTERNAL "Path to store vtkAddon prefix data.")
-  set(IGSIO_vtkAddon_INSTALL_DIR ${CMAKE_BINARY_DIR}/vtkAddon-install CACHE INTERNAL "Path to store vtkAddon install tree.")
-  set(IGSIO_vtkAddon_DIR ${CMAKE_BINARY_DIR}/vtkAddon-install/lib/cmake/vtkAddon CACHE INTERNAL "Path to vtkAddon CMake config.")
+  set(IGSIO_vtkAddon_DIR ${CMAKE_BINARY_DIR}/vtkAddon-bin CACHE INTERNAL "Path to store vtkAddon binaries")
 
   if(WIN32)
     set(ep_common_cxx_flags
@@ -42,7 +41,7 @@ else()
     PREFIX ${PLUS_IGSIO_PREFIX_DIR}
     "${PLUSBUILD_EXTERNAL_PROJECT_CUSTOM_COMMANDS}"
     SOURCE_DIR "${IGSIO_vtkAddon_SRC_DIR}"
-    BINARY_DIR "${CMAKE_BINARY_DIR}/vtkAddon-bin"
+    BINARY_DIR "${IGSIO_vtkAddon_DIR}"
     #--Download step--------------
     GIT_REPOSITORY  ${vtkAddon_GIT_REPOSITORY}
     GIT_TAG ${vtkAddon_GIT_REVISION}
@@ -60,9 +59,6 @@ else()
       -DCMAKE_RUNTIME_OUTPUT_DIRECTORY:PATH=${vtkAddon_CMAKE_RUNTIME_OUTPUT_DIRECTORY}
       -DCMAKE_LIBRARY_OUTPUT_DIRECTORY:PATH=${vtkAddon_CMAKE_LIBRARY_OUTPUT_DIRECTORY}
       -DCMAKE_ARCHIVE_OUTPUT_DIRECTORY:PATH=${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}
-      # Install
-      -DCMAKE_INSTALL_PREFIX:PATH=${IGSIO_vtkAddon_INSTALL_DIR}
-      -DvtkAddon_INSTALL_CMAKE_DIR:PATH=lib/cmake/vtkAddon
       # Options
       -DBUILD_SHARED_LIBS:BOOL=${BUILD_SHARED_LIBS}
       -DvtkAddon_INSTALL_NO_DEVELOPMENT:BOOL=OFF
@@ -75,6 +71,8 @@ else()
     #--Build step-----------------
     BUILD_ALWAYS 1
     #--Install step-----------------
+    INSTALL_COMMAND ""
     DEPENDS ${IGSIO_DEPENDENCIES}
     )
+
 endif()
